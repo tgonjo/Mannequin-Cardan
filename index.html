@@ -1,177 +1,72 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
-   <style>
-      #movementForm {
-         position: absolute;
-         top: 10px;
-         left: 10px;
-         background-color: rgba(255, 255, 255, 0.8);
-         padding: 20px;
-         border-radius: 10px;
-         z-index: 10;
-         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-      }
-   </style>
+    <style>
+        #movementForm {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 
-   <script type="importmap">
-   {
-      "imports": {
-         "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
-         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
-         "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
-      }
-   }
-   </script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
+                "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
+            }
+        }
+    </script>
+    <!-- Include external JavaScript files -->
+    <script type="module" src="init.js"></script>
+    <script type="module" src="movement.js"></script>
 </head>
 
 <body>
-   <h1>Mannequin Movement Controller</h1>
-   
-   <!-- Form for user input -->
-   <form id="movementForm">
-      <label for="segment">Choose a body segment:</label>
-      <select id="segment" name="segment">
-         <option value="torso">Torso</option>
-         <option value="head">Head</option>
-         <option value="l_arm">Left Upper Arm</option>
-         <option value="l_elbow">Left Lower Arm</option>
-         <option value="l_wrist">Left Hand</option>
-         <option value="r_arm">Right Upper Arm</option>
-         <option value="r_elbow">Right Lower Arm</option>
-         <option value="r_wrist">Right Hand</option>
-         <option value="l_leg">Left Thigh</option>
-         <option value="l_knee">Left Shank</option>
-         <option value="l_ankle">Left Foot</option>
-         <option value="r_leg">Right Thigh</option>
-         <option value="r_knee">Right Shank</option>
-         <option value="r_ankle">Right Foot</option>
-      </select>
-      <br><br>
+    <h1>Mannequin Movement Controller</h1>
 
-      <label for="bend">Bend Angle (degrees):</label>
-      <input type="number" id="bend" name="bend" value="0">
-      <br><br>
+    <!-- Form for user input -->
+    <form id="movementForm">
+        <label for="segment">Choose a body segment:</label>
+        <select id="segment" name="segment">
+            <option value="torso">Torso</option>
+            <option value="head">Head</option>
+            <option value="l_arm">Left Upper Arm</option>
+            <option value="l_elbow">Left Lower Arm</option>
+            <option value="l_wrist">Left Hand</option>
+            <option value="r_arm">Right Upper Arm</option>
+            <option value="r_elbow">Right Lower Arm</option>
+            <option value="r_wrist">Right Hand</option>
+            <option value="l_leg">Left Thigh</option>
+            <option value="l_knee">Left Shank</option>
+            <option value="l_ankle">Left Foot</option>
+            <option value="r_leg">Right Thigh</option>
+            <option value="r_knee">Right Shank</option>
+            <option value="r_ankle">Right Foot</option>
+        </select>
+        <br><br>
 
-      <label for="turn">Turn Angle (degrees):</label>
-      <input type="number" id="turn" name="turn" value="0">
-      <br><br>
+        <label for="bend">Bend Angle (degrees):</label>
+        <input type="number" id="bend" name="bend" value="0">
+        <br><br>
 
-      <label for="tilt">Tilt Angle (degrees):</label>
-      <input type="number" id="tilt" name="tilt" value="0">
-      <br><br>
+        <label for="turn">Turn Angle (degrees):</label>
+        <input type="number" id="turn" name="turn" value="0">
+        <br><br>
 
-      <button type="button" id="applyMovementButton">Apply Movement</button>
-   </form>
+        <label for="tilt">Tilt Angle (degrees):</label>
+        <input type="number" id="tilt" name="tilt" value="0">
+        <br><br>
 
-   <script type="module">
-      import { createStage, Male } from "mannequin";
-      
-      // Step 1: Create the 3D stage and render the Male mannequin
-      const stage = createStage();
-      const man = new Male();
-
-      // Ensure mannequin is ready and visible
-      console.log('Mannequin initialized:', man);
-
-      // Step 2: Create a function to handle the movement changes
-      function applyMovement() {
-         const segment = document.getElementById("segment").value;
-         const bend = parseFloat(document.getElementById("bend").value);
-         const turn = parseFloat(document.getElementById("turn").value);
-         const tilt = parseFloat(document.getElementById("tilt").value);
-
-         // Convert degrees to radians (3D models usually work with radians)
-         const bendRadians = bend * (Math.PI / 180);
-         const turnRadians = turn * (Math.PI / 180);
-         const tiltRadians = tilt * (Math.PI / 180);
-
-         // Apply the movement to the selected body segment using rotation properties
-         switch (segment) {
-            case "torso":
-               man.torso.rotation.x = bendRadians;
-               man.torso.rotation.y = turnRadians;
-               man.torso.rotation.z = tiltRadians;
-               break;
-            case "head":
-               man.head.rotation.x = bendRadians;
-               man.head.rotation.y = turnRadians;
-               man.head.rotation.z = tiltRadians;
-               break;
-            case "l_arm":
-               man.l_arm.rotation.x = bendRadians;
-               man.l_arm.rotation.y = turnRadians;
-               man.l_arm.rotation.z = tiltRadians;
-               break;
-            case "l_elbow":
-               man.l_elbow.rotation.x = bendRadians;
-               man.l_elbow.rotation.y = turnRadians;
-               man.l_elbow.rotation.z = tiltRadians;
-               break;
-            case "l_wrist":
-               man.l_wrist.rotation.x = bendRadians;
-               man.l_wrist.rotation.y = turnRadians;
-               man.l_wrist.rotation.z = tiltRadians;
-               break;
-            case "r_arm":
-               man.r_arm.rotation.x = bendRadians;
-               man.r_arm.rotation.y = turnRadians;
-               man.r_arm.rotation.z = tiltRadians;
-               break;
-            case "r_elbow":
-               man.r_elbow.rotation.x = bendRadians;
-               man.r_elbow.rotation.y = turnRadians;
-               man.r_elbow.rotation.z = tiltRadians;
-               break;
-            case "r_wrist":
-               man.r_wrist.rotation.x = bendRadians;
-               man.r_wrist.rotation.y = turnRadians;
-               man.r_wrist.rotation.z = tiltRadians;
-               break;
-            case "l_leg":
-               man.l_leg.rotation.x = bendRadians;
-               man.l_leg.rotation.y = turnRadians;
-               man.l_leg.rotation.z = tiltRadians;
-               break;
-            case "l_knee":
-               man.l_knee.rotation.x = bendRadians;
-               man.l_knee.rotation.y = turnRadians;
-               man.l_knee.rotation.z = tiltRadians;
-               break;
-            case "l_ankle":
-               man.l_ankle.rotation.x = bendRadians;
-               man.l_ankle.rotation.y = turnRadians;
-               man.l_ankle.rotation.z = tiltRadians;
-               break;
-            case "r_leg":
-               man.r_leg.rotation.x = bendRadians;
-               man.r_leg.rotation.y = turnRadians;
-               man.r_leg.rotation.z = tiltRadians;
-               break;
-            case "r_knee":
-               man.r_knee.rotation.x = bendRadians;
-               man.r_knee.rotation.y = turnRadians;
-               man.r_knee.rotation.z = tiltRadians;
-               break;
-            case "r_ankle":
-               man.r_ankle.rotation.x = bendRadians;
-               man.r_ankle.rotation.y = turnRadians;
-               man.r_ankle.rotation.z = tiltRadians;
-               break;
-            default:
-               console.error("Unknown segment");
-         }
-
-         // Log movement to confirm it's applied
-         console.log(`Movement applied to ${segment}: bend ${bend}°, turn ${turn}°, tilt ${tilt}°`);
-      }
-
-      // Step 3: Add an event listener to the button to apply the movement when clicked
-      document.getElementById("applyMovementButton").addEventListener("click", applyMovement);
-
-   </script>
+        <button type="button" id="applyMovementButton">Apply Movement</button>
+    </form>
 </body>
 
 </html>
