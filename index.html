@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mannequin.js Web App</title>
+    <!-- Mannequin.js CDN via jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/gh/boytchev/mannequin.js@latest/dist/mannequin.js"></script>
+    <style>
+        /* Basic styling */
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Placeholder for the canvas where Mannequin.js will render the scene -->
+    <canvas id="mannequin-canvas"></canvas>
+
+    <!-- Your JavaScript code to use Mannequin.js -->
+    <script>
+        // Wait until the browser finishes loading the page
+        window.onload = function () {
+            // Select the canvas element
+            const canvas = document.getElementById('mannequin-canvas');
+
+            // Initialize a new mannequin instance
+            const mannequin = new mannequinJS.Mannequin({
+                canvas: canvas,          // Attach it to the canvas
+                width: window.innerWidth,  // Full screen width
+                height: window.innerHeight // Full screen height
+            });
+
+            // Example: Add a model of a cube (this can be replaced with a 3D human model)
+            const cube = mannequin.createBox();
+            cube.position = [0, 0, -5];  // Position the cube
+            cube.scale = [1, 1, 1];      // Set the cube scale
+
+            // Set the background color for the scene
+            mannequin.setBackgroundColor([0.1, 0.1, 0.1]);
+
+            // Animate the cube
+            function animate() {
+                requestAnimationFrame(animate);
+                cube.rotateY(0.01);   // Rotate around the Y axis
+                mannequin.render();   // Render the scene
+            }
+
+            animate();  // Start the animation loop
+        };
+    </script>
+
+</body>
+</html>
