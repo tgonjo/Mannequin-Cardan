@@ -1,7 +1,7 @@
 // init.js
 import { createStage, Male } from "mannequin";
 
-// Step 1: Create the 3D stage and render the Male mannequin
+// Create the 3D stage and render the Male mannequin
 const stage = createStage();
 const man = new Male();
 

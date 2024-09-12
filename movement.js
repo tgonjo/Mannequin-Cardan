@@ -1,97 +1,79 @@
-// movement.js
 import { man } from './init.js';
 
-// Step 2: Create a function to handle the movement changes
 function applyMovement() {
     const segment = document.getElementById("segment").value;
     const bend = parseFloat(document.getElementById("bend").value);
     const turn = parseFloat(document.getElementById("turn").value);
     const tilt = parseFloat(document.getElementById("tilt").value);
+    const rotationOrder = document.getElementById("rotationOrder").value;  // Get the selected rotation order
 
-    // Convert degrees to radians (3D models usually work with radians)
+    // Convert degrees to radians
     const bendRadians = bend * (Math.PI / 180);
     const turnRadians = turn * (Math.PI / 180);
     const tiltRadians = tilt * (Math.PI / 180);
 
-    // Apply the movement to the selected body segment using rotation properties
+    // Apply the movement and rotation order to the selected body segment
+    let targetSegment;
     switch (segment) {
         case "torso":
-            man.torso.rotation.x = bendRadians;
-            man.torso.rotation.y = turnRadians;
-            man.torso.rotation.z = tiltRadians;
+            targetSegment = man.torso;
             break;
         case "head":
-            man.head.rotation.x = bendRadians;
-            man.head.rotation.y = turnRadians;
-            man.head.rotation.z = tiltRadians;
+            targetSegment = man.head;
             break;
         case "l_arm":
-            man.l_arm.rotation.x = bendRadians;
-            man.l_arm.rotation.y = turnRadians;
-            man.l_arm.rotation.z = tiltRadians;
+            targetSegment = man.l_arm;
             break;
         case "l_elbow":
-            man.l_elbow.rotation.x = bendRadians;
-            man.l_elbow.rotation.y = turnRadians;
-            man.l_elbow.rotation.z = tiltRadians;
+            targetSegment = man.l_elbow;
             break;
         case "l_wrist":
-            man.l_wrist.rotation.x = bendRadians;
-            man.l_wrist.rotation.y = turnRadians;
-            man.l_wrist.rotation.z = tiltRadians;
+            targetSegment = man.l_wrist;
             break;
         case "r_arm":
-            man.r_arm.rotation.x = bendRadians;
-            man.r_arm.rotation.y = turnRadians;
-            man.r_arm.rotation.z = tiltRadians;
+            targetSegment = man.r_arm;
             break;
         case "r_elbow":
-            man.r_elbow.rotation.x = bendRadians;
-            man.r_elbow.rotation.y = turnRadians;
-            man.r_elbow.rotation.z = tiltRadians;
+            targetSegment = man.r_elbow;
             break;
         case "r_wrist":
-            man.r_wrist.rotation.x = bendRadians;
-            man.r_wrist.rotation.y = turnRadians;
-            man.r_wrist.rotation.z = tiltRadians;
+            targetSegment = man.r_wrist;
             break;
         case "l_leg":
-            man.l_leg.rotation.x = bendRadians;
-            man.l_leg.rotation.y = turnRadians;
-            man.l_leg.rotation.z = tiltRadians;
+            targetSegment = man.l_leg;
             break;
         case "l_knee":
-            man.l_knee.rotation.x = bendRadians;
-            man.l_knee.rotation.y = turnRadians;
-            man.l_knee.rotation.z = tiltRadians;
+            targetSegment = man.l_knee;
             break;
         case "l_ankle":
-            man.l_ankle.rotation.x = bendRadians;
-            man.l_ankle.rotation.y = turnRadians;
-            man.l_ankle.rotation.z = tiltRadians;
+            targetSegment = man.l_ankle;
             break;
         case "r_leg":
-            man.r_leg.rotation.x = bendRadians;
-            man.r_leg.rotation.y = turnRadians;
-            man.r_leg.rotation.z = tiltRadians;
+            targetSegment = man.r_leg;
             break;
         case "r_knee":
-            man.r_knee.rotation.x = bendRadians;
-            man.r_knee.rotation.y = turnRadians;
-            man.r_knee.rotation.z = tiltRadians;
+            targetSegment = man.r_knee;
             break;
         case "r_ankle":
-            man.r_ankle.rotation.x = bendRadians;
-            man.r_ankle.rotation.y = turnRadians;
-            man.r_ankle.rotation.z = tiltRadians;
+            targetSegment = man.r_ankle;
             break;
         default:
             console.error("Unknown segment");
+            return;
     }
 
-    // Log movement to confirm it's applied
-    console.log(`Movement applied to ${segment}: bend ${bend}°, turn ${turn}°, tilt ${tilt}°`);
+    // Set the rotation order for the selected segment
+    targetSegment.rotation.order = rotationOrder;
+
+    // Apply the rotation angles to the selected segment
+    targetSegment.rotation.x = bendRadians;
+    targetSegment.rotation.y = turnRadians;
+    targetSegment.rotation.z = tiltRadians;
+
+    // Log movement and rotation order to confirm it's applied
+    console.log(`Movement applied to ${segment}: bend ${bend}°, turn ${turn}°, tilt ${tilt}°, with rotation order: ${rotationOrder}`);
 }
+
 
 // Step 3: Add an event listener to the button to apply the movement when clicked
 document.getElementById("applyMovementButton").addEventListener("click", applyMovement);
