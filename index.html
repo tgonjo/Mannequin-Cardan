@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mannequin Movement Controller</title>
     <style>
         #movementForm {
             position: absolute;
@@ -14,19 +17,15 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
     </style>
-
     <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
-                "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
-            }
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
+            "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
         }
+    }
     </script>
-    <!-- Include external JavaScript files -->
-    <script type="module" src="init.js"></script>
-    <script type="module" src="movement.js"></script>
 </head>
 
 <body>
@@ -67,6 +66,10 @@
 
         <button type="button" id="applyMovementButton">Apply Movement</button>
     </form>
+
+    <!-- Include external JavaScript files -->
+    <script type="module" src="./init.js"></script>
+    <script type="module" src="./movement.js"></script>
 </body>
 
 </html>
