@@ -2,9 +2,9 @@ import { man } from './init.js';
 
 function applyMovement() {
     const segment = document.getElementById("segment").value;
-    const bend = parseFloat(document.getElementById("bend").value);
-    const turn = parseFloat(document.getElementById("turn").value);
-    const tilt = parseFloat(document.getElementById("tilt").value);
+    const bend = parseFloat(document.getElementById("y").value);
+    const turn = parseFloat(document.getElementById("z").value);
+    const tilt = parseFloat(document.getElementById("x").value);
     const rotationOrder = document.getElementById("rotationOrder").value;  // Get the selected rotation order
 
     // Convert degrees to radians
