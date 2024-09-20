@@ -128,7 +128,13 @@ function updateLocalAxesRotation(bend, turn, tilt, rotationOrder) {
             currentAngle += deltaAngle;
 
             // Apply the current frame's rotation to the localAxes rotation
-            localAxes.rotation[axis] += deltaAngle;
+            if (axis === 'x') {
+                localAxes.rotateX(deltaAngle); // Rotate around local X axis
+            } else if (axis === 'y') {
+                localAxes.rotateY(deltaAngle); // Rotate around local Y axis
+            } else if (axis === 'z') {
+                localAxes.rotateZ(deltaAngle); // Rotate around local Z axis
+            }
 
             // Debug log to track the rotation progress
             console.log(`Rotating ${axis} axis: currentAngle = ${currentAngle}, targetAngle = ${targetAngle}, deltaAngle = ${deltaAngle}`);
