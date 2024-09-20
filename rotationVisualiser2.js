@@ -60,7 +60,7 @@ function createLocalAxis(color, position, axis) {
 
 // Create local axes (rotating)
 const localAxes = new THREE.Group();
-localAxes.add(createLocalAxis(0x00ff00, { x: 0, y: 0, z: 0 }, 'x')); // Y Axis
+localAxes.add(createLocalAxis(0x006400, { x: 0, y: 0, z: 0 }, 'x')); // Y Axis
 localAxes.add(createLocalAxis(0x0000ff, { x: 0, y: 0, z: 0 }, 'y')); // Z Axis
 localAxes.add(createLocalAxis(0xff0000, { x: 0, y: 0, z: 0 }, 'z')); // X Axis
 rotationScene.add(localAxes);

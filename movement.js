@@ -28,7 +28,7 @@ function createThickerColoredAxes(size = 1, thickness = 1) {
     axesGroup.add(xArrow);
 
     // Y axis (green)
-    const yMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });  // Green for Y axis
+    const yMaterial = new THREE.MeshBasicMaterial({ color: 0x006400 });  // Green for Y axis
     const yGeometry = new THREE.CylinderGeometry(thickness, thickness, size, 32);
     const yAxis = new THREE.Mesh(yGeometry, yMaterial);
     yAxis.position.set(size / 2, 0, 0);  // Position at the middle of the Y-axis
@@ -36,7 +36,7 @@ function createThickerColoredAxes(size = 1, thickness = 1) {
     axesGroup.add(yAxis);
 
     // Y axis arrow
-    const yArrowMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const yArrowMaterial = new THREE.MeshBasicMaterial({ color: 0x006400 });
     const yArrowGeometry = new THREE.ConeGeometry(thickness * 2, thickness * 3, 32);
     const yArrow = new THREE.Mesh(yArrowGeometry, yArrowMaterial);
     yArrow.position.set(size, 0, 0);  // Position at the tip of Y-axis
