@@ -7,58 +7,61 @@ import { updateLocalAxesRotation } from './rotationVisualiser2.js';
 let currentAxesHelper = null;
 let previousSegment = null;  // Keep track of the previously selected segment
 
-// Helper function to create thicker colored axes
-function createThickerColoredAxes(size = 1, thickness = 1) {
+function createThickerColoredAxes(size = 1, thickness = 1, orientation = { x: 0, y: 0, z: 0 }) {
     const axesGroup = new THREE.Group();  // Group to hold the three axes
 
+    // Apply the specified rotation to align axes with the desired orientation
+    axesGroup.rotation.set(orientation.x, orientation.y, orientation.z);
+
     // X axis (red)
-    const xMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });  // Red for X axis
-    const xGeometry = new THREE.CylinderGeometry(thickness, thickness, size, 32);  // Cylinder for thickness
+    const xMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const xGeometry = new THREE.CylinderGeometry(thickness, thickness, size, 32);
     const xAxis = new THREE.Mesh(xGeometry, xMaterial);
-    xAxis.position.set(0, 0, size / 2);  // Position at the middle of the X-axis
-    xAxis.rotation.x = Math.PI / 2;  // Rotate to align with X-axis
+    xAxis.position.set(0, 0, size / 2);
+    xAxis.rotation.x = Math.PI / 2;
     axesGroup.add(xAxis);
 
     // X axis arrow
     const xArrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     const xArrowGeometry = new THREE.ConeGeometry(thickness * 2, thickness * 3, 32);
     const xArrow = new THREE.Mesh(xArrowGeometry, xArrowMaterial);
-    xArrow.position.set(0, 0, size);  
-    xArrow.rotation.x = Math.PI / 2;   // Align the arrow with X-axis
+    xArrow.position.set(0, 0, size);
+    xArrow.rotation.x = Math.PI / 2;
     axesGroup.add(xArrow);
 
     // Y axis (green)
-    const yMaterial = new THREE.MeshBasicMaterial({ color: 0x006400 });  // Green for Y axis
+    const yMaterial = new THREE.MeshBasicMaterial({ color: 0x006400 });
     const yGeometry = new THREE.CylinderGeometry(thickness, thickness, size, 32);
     const yAxis = new THREE.Mesh(yGeometry, yMaterial);
-    yAxis.position.set(size / 2, 0, 0);  // Position at the middle of the Y-axis
-    yAxis.rotation.z = Math.PI / 2;  // Rotate to align with Y-axis
+    yAxis.position.set(size / 2, 0, 0);
+    yAxis.rotation.z = Math.PI / 2;
     axesGroup.add(yAxis);
 
     // Y axis arrow
     const yArrowMaterial = new THREE.MeshBasicMaterial({ color: 0x006400 });
     const yArrowGeometry = new THREE.ConeGeometry(thickness * 2, thickness * 3, 32);
     const yArrow = new THREE.Mesh(yArrowGeometry, yArrowMaterial);
-    yArrow.position.set(size, 0, 0);  // Position at the tip of Y-axis
-    yArrow.rotation.z = Math.PI / -2;  // Align the arrow with Y-axis
+    yArrow.position.set(size, 0, 0);
+    yArrow.rotation.z = Math.PI / -2;
     axesGroup.add(yArrow);
 
     // Z axis (blue)
-    const zMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });  // Blue for Z axis
+    const zMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
     const zGeometry = new THREE.CylinderGeometry(thickness, thickness, size, 32);
     const zAxis = new THREE.Mesh(zGeometry, zMaterial);
-    zAxis.position.set(0, size / 2, 0);  // Position at the middle of the Z-axis
+    zAxis.position.set(0, size / 2, 0);
     axesGroup.add(zAxis);
 
     // Z axis arrow
     const zArrowMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
     const zArrowGeometry = new THREE.ConeGeometry(thickness * 2, thickness * 3, 32);
     const zArrow = new THREE.Mesh(zArrowGeometry, zArrowMaterial);
-    zArrow.position.set(0, size, 0);  // Position at the tip of Z-axis
+    zArrow.position.set(0, size, 0);
     axesGroup.add(zArrow);
 
     return axesGroup;
 }
+
 
 function applyMovement() {
     const segment = document.getElementById("segment").value;
@@ -72,8 +75,9 @@ function applyMovement() {
     const turnRadians = turn * (Math.PI / 180);
     const tiltRadians = tilt * (Math.PI / 180);
 
-    // Apply the movement and rotation order to the selected body segment
     let targetSegment;
+    let orientation = { x: 0, y: 0, z: 0 };  // Default orientation
+
     switch (segment) {
         case "torso":
             targetSegment = man.torso;
@@ -86,36 +90,44 @@ function applyMovement() {
             break;
         case "l_elbow":
             targetSegment = man.l_elbow;
+            orientation = { x: 0, y: 0, z: Math.PI }; // Rotate around X
             break;
         case "l_wrist":
             targetSegment = man.l_wrist;
+            orientation = { x: 0, y: 0, z: Math.PI }; // Rotate around X
             break;
         case "r_arm":
             targetSegment = man.r_arm;
             break;
         case "r_elbow":
             targetSegment = man.r_elbow;
+            orientation = { x: 0, y: 0, z: Math.PI }; // Rotate around X
             break;
         case "r_wrist":
             targetSegment = man.r_wrist;
+            orientation = { x: 0, y: 0, z: Math.PI }; // Rotate around X
             break;
         case "l_leg":
             targetSegment = man.l_leg;
             break;
         case "l_knee":
             targetSegment = man.l_knee;
+            orientation = { x: Math.PI, y: 0, z: 0 }; // Rotate around X
             break;
         case "l_ankle":
             targetSegment = man.l_ankle;
+            orientation = { x: Math.PI, y: 0, z: 0 }; // Rotate around Y
             break;
         case "r_leg":
             targetSegment = man.r_leg;
             break;
         case "r_knee":
             targetSegment = man.r_knee;
+            orientation = { x: Math.PI, y: 0, z: 0 }; // Rotate around X
             break;
         case "r_ankle":
             targetSegment = man.r_ankle;
+            orientation = { x: Math.PI, y: 0, z: 0 }; // Rotate around Y
             break;
         default:
             console.error("Unknown segment");
@@ -125,19 +137,21 @@ function applyMovement() {
     // Set the rotation order for the selected segment
     targetSegment.rotation.order = rotationOrder;
 
+    // Reset to zero rotation to align with the global coordinate system
+    targetSegment.rotation.set(0, 0, 0);
+
     // Apply the rotation angles to the selected segment
-    targetSegment.rotation.x = bendRadians;
-    targetSegment.rotation.y = turnRadians;
-    targetSegment.rotation.z = tiltRadians;
+    targetSegment.rotation.x += bendRadians;
+    targetSegment.rotation.y += turnRadians;
+    targetSegment.rotation.z += tiltRadians;
 
-
-     // If there's an existing axes helper, remove it from the previous segment
-     if (currentAxesHelper && previousSegment) {
+    // If there's an existing axes helper, remove it from the previous segment
+    if (currentAxesHelper && previousSegment) {
         previousSegment.remove(currentAxesHelper);
     }
 
-    // Create a new set of thicker colored axes and add it to the selected segment
-    currentAxesHelper = createThickerColoredAxes(5, 0.5);  // Adjust size and thickness
+    // Create a new set of thicker colored axes with the specified orientation
+    currentAxesHelper = createThickerColoredAxes(5, 0.5, orientation);  // Pass orientation
     targetSegment.add(currentAxesHelper);
 
     // Set the current segment as the previous segment for the next movement
@@ -149,10 +163,11 @@ function applyMovement() {
     // Update the local axes in the top-right animation
     updateLocalAxesRotation(bend, turn, tilt, rotationOrder);
 
-
     // Log confirmation of axes addition
     console.log(`Thicker colored axes added to ${segment}`);
 }
+
+
 
 
 // Step 3: Add an event listener to the button to apply the movement when clicked
