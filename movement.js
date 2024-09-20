@@ -1,5 +1,7 @@
 import { man, scene } from './init.js';
 import * as THREE from 'three';
+import { updateLocalAxesRotation } from './rotationVisualiser2.js';
+
 
 // Variable to track the current segment's axes helper
 let currentAxesHelper = null;
@@ -143,6 +145,9 @@ function applyMovement() {
 
     // Log movement and rotation order to confirm it's applied
     console.log(`Movement applied to ${segment}: bend ${bend}°, turn ${turn}°, tilt ${tilt}°, with rotation order: ${rotationOrder}`);
+
+    // Update the local axes in the top-right animation
+    updateLocalAxesRotation(bend, turn, tilt, rotationOrder);
 
 
     // Log confirmation of axes addition
