@@ -90,7 +90,7 @@ function applyMovement() {
             break;
         case "l_elbow":
             targetSegment = man.l_elbow;
-            orientation = { x: 0, y: 0, z: 0 }; // Rotate around X
+            orientation = { x: 0, y: 0, z: Math.PI }; // Rotate around X
             break;
         case "l_wrist":
             targetSegment = man.l_wrist;
