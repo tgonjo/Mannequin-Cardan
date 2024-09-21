@@ -85,7 +85,7 @@ function updateLocalAxesRotation(bend, turn, tilt, rotationOrder) {
     const bendRadians = bend * (Math.PI / 180);
     const turnRadians = turn * (Math.PI / 180);
     const tiltRadians = tilt * (Math.PI / 180);
-    const rotationSpeed = Math.PI / 15; // 90 degrees per second in radians
+    const rotationSpeed = Math.PI / 40; // 90 degrees per second in radians
 
     // Reset the local axes to match the global coordinates (zero rotation)
     localAxes.rotation.set(0, 0, 0);  // This ensures we start from the initial position
