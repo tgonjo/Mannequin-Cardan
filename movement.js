@@ -141,9 +141,24 @@ function applyMovement() {
     targetSegment.rotation.set(0, 0, 0);
 
     // Apply the rotation angles to the selected segment
-    targetSegment.rotation.x += bendRadians;
-    targetSegment.rotation.y += turnRadians;
+
+    if (targetSegment == man.l_elbow || targetSegment == man.l_wrist ||targetSegment == man.r_elbow || targetSegment == man.r_wrist)
+    {targetSegment.rotation.x += bendRadians*-1;
+    targetSegment.rotation.y += turnRadians*-1;
     targetSegment.rotation.z += tiltRadians;
+    }
+    
+    else if (targetSegment == man.l_knee || targetSegment == man.l_ankle || targetSegment == man.r_knee || targetSegment == man.r_ankle)
+    {targetSegment.rotation.x += bendRadians;
+        targetSegment.rotation.y += turnRadians*-1;
+        targetSegment.rotation.z += tiltRadians*-1;
+    }
+
+    else {
+        targetSegment.rotation.x += bendRadians;
+        targetSegment.rotation.y += turnRadians;
+        targetSegment.rotation.z += tiltRadians;
+    }
 
     // If there's an existing axes helper, remove it from the previous segment
     if (currentAxesHelper && previousSegment) {
