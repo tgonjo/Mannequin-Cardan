@@ -4,7 +4,7 @@ This web app (access the app [here](https://tgonjo.github.io/Mannequin-Cardan/))
 This app is developed using [Mannequin.js](https://boytchev.github.io/mannequin.js/) and [Three.js](https://threejs.org/). The app runs through a Content Delivery Network [(jsDelivr)](https://www.jsdelivr.com/). 
 
 ### Definitions
-+ **Cardan Angle**: In Biomechanics (particularly Sports Biomechanics), the term 'Euler Angle' is often used. However, what is actually often used in biomechanics is the 'Cardiac angle'.
++ **Cardan Angle**: In Biomechanics (particularly Sports Biomechanics), the term 'Euler Angle' is often used. However, what is actually often used in biomechanics is the 'Cardan angle'.
 The Euler angle involves a rotational sequence with the same first and third axes (e.g., XYX or ZXZ), while the Cardan angle has a rotational sequence involving all three axes (e.g., XYZ or ZXY).
 + **Global Coordinates**: In this app, a Z-up right-hand coordinate system is used.
 + **Local Coordinates**: Each body segment of the mannequin has a local coordinate system. When the mannequin is standing upright with its feet together and the arms at its side,
