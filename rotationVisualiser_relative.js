@@ -15,7 +15,7 @@ rotationRenderer.setSize(300, 300);
 rotationRenderer.setClearColor(0xEEEEEE, 1); // Background color
 
 // Attach the renderer to the div element
-document.getElementById('rotationVisualiser').appendChild(rotationRenderer.domElement);
+document.getElementById('rotationVisualiser_relative').appendChild(rotationRenderer.domElement);
 
 // Function to create a cone axis (global coordinate axis)
 function createGlobalAxis(color, position, axis) {
@@ -29,9 +29,9 @@ function createGlobalAxis(color, position, axis) {
 
 // Create global axes (stationary)
 const globalAxes = new THREE.Group();
-globalAxes.add(createGlobalAxis(0x00ff00, { x: 0, y: 0, z: 1 }, 'x')); // Y Axis
-globalAxes.add(createGlobalAxis(0x80E2F6, { x: 0, y: 1, z: 0 }, 'y')); // Z Axis
-globalAxes.add(createGlobalAxis(0xF680E2, { x: -1, y: 0, z: 0 }, 'z')); // X Axis
+globalAxes.add(createGlobalAxis(0x138d75, { x: 0, y: 0, z: 1 }, 'x')); // Y Axis
+globalAxes.add(createGlobalAxis(0x283747, { x: 0, y: 1, z: 0 }, 'y')); // Z Axis
+globalAxes.add(createGlobalAxis(0xe67e22, { x: -1, y: 0, z: 0 }, 'z')); // X Axis
 rotationScene.add(globalAxes);
 
 // Function to create an arrow axis (local coordinate axis)
@@ -81,7 +81,7 @@ function animate() {
 animate();
 
 // Function to update the local axes rotation based on user input
-function updateLocalAxesRotation(bend, turn, tilt, rotationOrder) {
+function updateLocalAxesRotation_relative(bend, turn, tilt, rotationOrder_relative) {
     const bendRadians = bend * (Math.PI / 180);
     const turnRadians = turn * (Math.PI / 180);
     const tiltRadians = tilt * (Math.PI / 180);
@@ -137,7 +137,7 @@ function updateLocalAxesRotation(bend, turn, tilt, rotationOrder) {
 
     // Rotate based on the order of rotationOrder2, adding pauses between steps
     async function animateRotationSequence() {
-        for (const axis of rotationOrder.toLowerCase()) {
+        for (const axis of rotationOrder_relative.toLowerCase()) {
             let targetAngle;
             if (axis === 'x') {
                 targetAngle = tiltRadians*-1;   // X-axis is for tilt
@@ -161,4 +161,4 @@ function updateLocalAxesRotation(bend, turn, tilt, rotationOrder) {
 
 
 
-export { updateLocalAxesRotation };
+export { updateLocalAxesRotation_relative };

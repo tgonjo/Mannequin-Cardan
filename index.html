@@ -6,47 +6,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mannequin Movement Controller</title>
     <style>
-        #movementForm {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 10;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        }
-    </style>
-    <title>Mannequin Movement Controller relative</title>
-    <style>
+        #movementForm,
         #movementForm2 {
             position: absolute;
-            top: 350px;
-            left: 10px;
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             z-index: 10;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.5s ease, pointer-events 0.5s ease;
         }
+
+        #movementForm2 {
+            top: 10px;
+            left: 10px;
+        }
+
+        #movementForm {
+            top: 350px;
+            left: 10px;
+        }
+
+        /* Semi-transparent style for inactive form */
+        .inactive {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        /* Switch container styling */
+        #switchContainer {
+            position: absolute;
+            top: 10px;
+            left: 450px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 15;
+        }
+
+
+        #rotationVisualiser_relative {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            background-color: white;
+            z-index: 20;
+        }
+
+        #rotationVisualiser {
+            position: absolute;
+            top: 320px;
+            right: 10px;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            background-color: white;
+            z-index: 20;
+        }
+
     </style>
     <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
-            "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
+                "mannequin": "https://cdn.jsdelivr.net/npm/mannequin-js@latest/src/mannequin.js"
+            }
         }
-    }
     </script>
 </head>
 
 <body>
     <h1>Mannequin Movement Controller</h1>
 
-    <!-- Form for user input -->
+    <!-- Toggle Switch for activating forms -->
+    <div id="switchContainer">
+        <label for="toggleSwitch"><b>Select Mode:</b></label>
+        <select id="toggleSwitch">
+            <option value="relative">Relative Angle (Joint Angle)</option>
+            <option value="absolute">Absolute Angle (Segment Angle)</option>
+        </select>
+    </div>
+
+
+    <!-- Form for Absolute Angle (movementForm) -->
     <form id="movementForm">
-        <label><b>Absolute Angle<br><br>(Segment angle relative to the global coordinate system)</b></label>
+        <label><b>Absolute Angle<br><br>(Segment angle relative to the global coordinate system)</b>
+        <br><br><i>*This mode can handle only one segment at a time</i></label>
         <br><br>
         <label for="segment">Choose a body segment:</label>
         <select id="segment" name="segment">
@@ -81,74 +131,125 @@
 
         <label for="rotationOrder">Rotation sequence:</label>
         <select id="rotationOrder" name="rotationOrder">
-            <option value="XYZ">x -> y -> z</option>
-            <option value="XZY">x -> z -> y</option>
-            <option value="YXZ">y -> x -> z</option>
-            <option value="YZX">y -> z -> x</option>
-            <option value="ZXY">z -> x -> y</option>
-            <option value="ZYX">z -> y -> x</option>
+            <option value="XZY">x -> y -> z</option>
+            <option value="XYZ">x -> z -> y</option>
+            <option value="ZXY">y -> x -> z</option>
+            <option value="ZYX">y -> z -> x</option>
+            <option value="YXZ">z -> x -> y</option>
+            <option value="YZX">z -> y -> x</option>
         </select>
         <br><br>
 
-        <button type="button" id="applyMovementButton">Apply Movement</button>
+        <div style="display: flex; gap: 10px;">
+            <button type="button" id="applyMovementButton">Apply Movement</button>
+            <button type="button" id="resetPoseButton">Reset Pose</button>
+        </div>
     </form>
 
+    <!-- Form for Relative Angle (movementForm2) -->
+    <form id="movementForm2">
+        <label><b>Relative Angle<br><br>(Segment angle relative to another segment - joint angle)</b></label>
+        <br><br>
+        <label for="joint">Choose a joint:</label>
+        <select id="joint" name="joint">
+            <option value="neck_joint">Neck</option>
+            <option value="trunk_joint">Trunk</option>
+            <option value="l_shoulder_joint">Left Shoulder</option>
+            <option value="l_elbow_joint">Left Elbow</option>
+            <option value="l_wrist_joint">Left Wrist</option>
+            <option value="r_shoulder_joint">Right Shoulder</option>
+            <option value="r_elbow_joint">Right Elbow</option>
+            <option value="r_wrist_joint">Right Wrist</option>
+            <option value="l_hip_joint">Left Hip</option>
+            <option value="l_knee_joint">Left Knee</option>
+            <option value="l_ankle_joint">Left Ankle</option>
+            <option value="r_hip_joint">Right Hip</option>
+            <option value="r_knee_joint">Right Knee</option>
+            <option value="r_ankle_joint">Right Ankle</option>
+        </select>
+        <br><br>
+
+        <label for="x_relative">Rotation around <b><font color="#ff0000">x-axis</font></b> (degrees):</label>
+        <input type="number" id="x_relative" name="x_relative" value="0">
+        <br><br>
+
+        <label for="y_relative">Rotation around <b><font color="#006400">y-axis</font></b> (degrees):</label>
+        <input type="number" id="y_relative" name="y_relative" value="0">
+        <br><br>
+
+        <label for="z_relative">Rotation around <b><font color="#0000ff">z-axis</font></b> (degrees):</label>
+        <input type="number" id="z_relative" name="z_relative" value="0">
+        <br><br>
+
+        <label for="rotationOrder_relative">Rotation sequence:</label>
+        <select id="rotationOrder_relative" name="rotationOrder_relative">
+            <option value="XZY">x -> y -> z</option>
+            <option value="XYZ">x -> z -> y</option>
+            <option value="ZXY">y -> x -> z</option>
+            <option value="ZYX">y -> z -> x</option>
+            <option value="YXZ">z -> x -> y</option>
+            <option value="YZX">z -> y -> x</option>
+        </select>
+        <br><br>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="button" id="applyMovementButton2">Apply Movement</button>
+            <button type="button" id="resetPoseButton2">Reset Pose</button>
+        </div>
+    </form>
+
+    <div id="rotationVisualiser"></div>
+    <div id="rotationVisualiser_relative"></div>
 
     <!-- Include external JavaScript files -->
     <script type="module" src="./init.js"></script>
     <script type="module" src="./axesHelper.js"></script>
-    <script type="module" src="./movement.js"></script>
     <script type="module" src="./rotationVisualiser2.js"></script>
+    <script type="module" src="./resetPose.js"></script>
 
-    <div id="rotationVisualiser" style="position: absolute; top: 10px; right: 10px; width: 400px; height: 400px; border: 1px solid black; background-color: white; z-index: 20;"></div>
+    <script>
+        const movementForm = document.getElementById('movementForm');
+        const movementForm2 = document.getElementById('movementForm2');
+        const rotationVisualiser = document.getElementById('rotationVisualiser');
+        const rotationVisualiser_relative = document.getElementById('rotationVisualiser_relative');
+        const toggleSwitch = document.getElementById('toggleSwitch');
 
+        // Keep track of the loaded scripts
+        let movementModule = null;
+        let movementRelativeModule = null;
+
+        // Function to handle the switch toggle
+        async function toggleForms() {
+            if (toggleSwitch.value === 'absolute') {
+                movementForm.classList.remove('inactive');
+                movementForm2.classList.add('inactive');
+                rotationVisualiser.classList.remove('inactive');
+                rotationVisualiser_relative.classList.add('inactive');
+
+                // Load movement.js if not already loaded
+                if (!movementModule) {
+                    movementModule = await import('./movement.js');
+                }
+            } else {
+                movementForm.classList.add('inactive');
+                movementForm2.classList.remove('inactive');
+                rotationVisualiser.classList.add('inactive');
+                rotationVisualiser_relative.classList.remove('inactive');
+
+                // Load movement_relative.js if not already loaded
+                if (!movementRelativeModule) {
+                    movementRelativeModule = await import('./movement_relative.js');
+                }
+            }
+        }
+
+        // Initialize the toggle state
+        toggleForms();
+
+        // Add event listener to the switch
+        toggleSwitch.addEventListener('change', toggleForms);
+
+    </script>
 </body>
-
-<!-- <form id="movementForm2">
-    <label><b>Relative Angle<br><br>(Segment angle relative to anotehr segment - joint angle)</b></label>
-    <br><br>
-    <label for="segment">Choose a joint:</label>
-    <select id="segment" name="segment">
-        <option value="neck_joint">Neck</option>
-        <option value="l_shoulder_joint">Left Shoulder</option>
-        <option value="l_elbow_joint">Left Elbow</option>
-        <option value="l_wrist_joint">Left Wrist</option>
-        <option value="r_shoulder_joint">Right Shoulder</option>
-        <option value="r_elbow_joint">Right Elbow</option>
-        <option value="r_wrist_joint">Right Wrist</option>
-        <option value="l_hip_joint">Left Hip</option>
-        <option value="l_knee_joint">Left Knee</option>
-        <option value="l_ankle_joint">Left Ankle</option>
-        <option value="r_hip_joint">Right Hip</option>
-        <option value="r_knee_joint">Right Knee</option>
-        <option value="r_ankle_joint">Right Ankle</option>
-    </select>
-    <br><br>
-
-    <label for="bend">Rotation around x-axis (degrees):</label>
-    <input type="number" id="bend" name="bend" value="0">
-    <br><br>
-
-    <label for="turn">Rotation around y-axis (degrees):</label>
-    <input type="number" id="turn" name="turn" value="0">
-    <br><br>
-
-    <label for="tilt">Rotation around z-axis (degrees):</label>
-    <input type="number" id="tilt" name="tilt" value="0">
-    <br><br>
-
-    <label for="order">Rotation sequence:</label>
-    <select id="order" name="order">
-        <option value="XYZ">x -> y -> z</option>
-        <option value="XZY">x -> z -> y</option>
-        <option value="YXZ">y -> x -> z</option>
-        <option value="YZX">y -> z -> x</option>
-        <option value="ZXY">z -> x -> y</option>
-        <option value="ZYX">z -> y -> x</option>
-    </select>
-    <br><br>
-
-    <button type="button" id="applyMovementButton">Apply Movement</button>
-</form> -->
 
 </html>

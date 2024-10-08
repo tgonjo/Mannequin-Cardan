@@ -1,4 +1,5 @@
 import { man, scene } from './init.js';
+import { resetPosture } from './resetPose.js';
 import * as THREE from 'three';
 import { updateLocalAxesRotation } from './rotationVisualiser2.js';
 
@@ -7,8 +8,10 @@ import { updateLocalAxesRotation } from './rotationVisualiser2.js';
 let currentAxesHelper = null;
 let previousSegment = null;  // Keep track of the previously selected segment
 
-function createThickerColoredAxes(size = 1, thickness = 1, orientation = { x: 0, y: 0, z: 0 }) {
+function createThickerColoredAxes(size = 1, thickness = 1, orientation = { x: 0, y: 0, z: 0 },name_target='') {
     const axesGroup = new THREE.Group();  // Group to hold the three axes
+
+    axesGroup.name = name_target;
 
     // Apply the specified rotation to align axes with the desired orientation
     axesGroup.rotation.set(orientation.x, orientation.y, orientation.z);
@@ -64,6 +67,9 @@ function createThickerColoredAxes(size = 1, thickness = 1, orientation = { x: 0,
 
 
 function applyMovement() {
+
+    resetPosture()
+    
     const segment = document.getElementById("segment").value;
     const bend = parseFloat(document.getElementById("y").value);
     const turn = parseFloat(document.getElementById("z").value);
@@ -166,7 +172,7 @@ function applyMovement() {
     }
 
     // Create a new set of thicker colored axes with the specified orientation
-    currentAxesHelper = createThickerColoredAxes(5, 0.5, orientation);  // Pass orientation
+    currentAxesHelper = createThickerColoredAxes(5, 0.5, orientation,'target_axes');  // Pass orientation
     targetSegment.add(currentAxesHelper);
 
     // Set the current segment as the previous segment for the next movement
