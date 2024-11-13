@@ -131,8 +131,8 @@ function applyMovement() {
 
     const joint = document.getElementById("joint").value;
     const bend = parseFloat(document.getElementById("y_relative").value);
-    const turn = parseFloat(document.getElementById("z_relative").value);
-    const tilt = parseFloat(document.getElementById("x_relative").value);
+    const turn = parseFloat(document.getElementById("x_relative").value);
+    const tilt = parseFloat(document.getElementById("z_relative").value);
     const rotationOrder_relative = document.getElementById("rotationOrder_relative").value;
 
     // Convert degrees to radians
