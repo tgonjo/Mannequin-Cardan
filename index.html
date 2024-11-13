@@ -119,14 +119,17 @@
 
         <label for="x">Rotation around <b><font color="#ff0000">x-axis</font></b> (degrees):</label>
         <input type="number" id="x" name="x" value="0">
+        <input type="range" id="x-slider" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="y">Rotation around <b><font color="#006400">y-axis</font></b> (degrees):</label>
         <input type="number" id="y" name="y" value="0">
+        <input type="range" id="y-slider" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="z">Rotation around <b><font color="#0000ff">z-axis</font></b> (degrees):</label>
         <input type="number" id="z" name="z" value="0">
+        <input type="range" id="z-slider" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="rotationOrder">Rotation sequence:</label>
@@ -145,6 +148,26 @@
             <button type="button" id="resetPoseButton">Reset Pose</button>
         </div>
     </form>
+
+    <script>
+        // Synchronize the x-axis number input and slider
+        const xInput = document.getElementById('x');
+        const xSlider = document.getElementById('x-slider');
+        xInput.addEventListener('input', () => xSlider.value = xInput.value);
+        xSlider.addEventListener('input', () => xInput.value = xSlider.value);
+    
+        // Synchronize the y-axis number input and slider
+        const yInput = document.getElementById('y');
+        const ySlider = document.getElementById('y-slider');
+        yInput.addEventListener('input', () => ySlider.value = yInput.value);
+        ySlider.addEventListener('input', () => yInput.value = ySlider.value);
+    
+        // Synchronize the z-axis number input and slider
+        const zInput = document.getElementById('z');
+        const zSlider = document.getElementById('z-slider');
+        zInput.addEventListener('input', () => zSlider.value = zInput.value);
+        zSlider.addEventListener('input', () => zInput.value = zSlider.value);
+    </script>
 
     <!-- Form for Relative Angle (movementForm2) -->
     <form id="movementForm2">
@@ -171,14 +194,17 @@
 
         <label for="x_relative">Rotation around <b><font color="#ff0000">x-axis</font></b> (degrees):</label>
         <input type="number" id="x_relative" name="x_relative" value="0">
+        <input type="range" id="x-slider_relative" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="y_relative">Rotation around <b><font color="#006400">y-axis</font></b> (degrees):</label>
         <input type="number" id="y_relative" name="y_relative" value="0">
+        <input type="range" id="y-slider_relative" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="z_relative">Rotation around <b><font color="#0000ff">z-axis</font></b> (degrees):</label>
         <input type="number" id="z_relative" name="z_relative" value="0">
+        <input type="range" id="z-slider_relative" min="-180" max="180" value="0" step="1">
         <br><br>
 
         <label for="rotationOrder_relative">Rotation sequence:</label>
@@ -197,6 +223,26 @@
             <button type="button" id="resetPoseButton2">Reset Pose</button>
         </div>
     </form>
+
+    <script>
+        // Synchronize the x-axis number input and slider
+        const xInput_relative = document.getElementById('x_relative');
+        const xSlider_relative = document.getElementById('x-slider_relative');
+        xInput_relative.addEventListener('input', () => xSlider_relative.value = xInput_relative.value);
+        xSlider_relative.addEventListener('input', () => xInput_relative.value = xSlider_relative.value);
+    
+        // Synchronize the y-axis number input and slider
+        const yInput_relative = document.getElementById('y_relative');
+        const ySlider_relative = document.getElementById('y-slider_relative');
+        yInput_relative.addEventListener('input', () => ySlider_relative.value = yInput_relative.value);
+        ySlider_relative.addEventListener('input', () => yInput_relative.value = ySlider_relative.value);
+    
+        // Synchronize the z-axis number input and slider
+        const zInput_relative = document.getElementById('z_relative');
+        const zSlider_relative = document.getElementById('z-slider_relative');
+        zInput_relative.addEventListener('input', () => zSlider_relative.value = zInput_relative.value);
+        zSlider_relative.addEventListener('input', () => zInput_relative.value = zSlider_relative.value);
+    </script>
 
     <div id="rotationVisualiser"></div>
     <div id="rotationVisualiser_relative"></div>
